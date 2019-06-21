@@ -1,0 +1,24 @@
+{
+  "name": "LIRIBOT",
+  "version": "1.0.0",
+  "description": "A slightly intelligent bot made with node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cakebatterandsprinkles/LIRIBOT.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cakebatterandsprinkles/LIRIBOT/issues"
+  },
+  "homepage": "https://github.com/cakebatterandsprinkles/LIRIBOT#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "dotenv": "^8.0.0"
+  }
+}
