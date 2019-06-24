@@ -105,7 +105,7 @@ function findSong(query) {
         spotify
             .search({
                 type: 'track',
-                query: query.replace("/\+/g", " ")
+                query: query.replace(/\+/g, " ")
             })
             .then(function (response) {
                 var data = response.tracks.items;
