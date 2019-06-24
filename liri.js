@@ -11,6 +11,10 @@ const spotify = new Spotify(keys.spotify);
 const moment = require('moment');
 //require axios
 const axios = require('axios');
+//require fs
+const fs = require('fs');
+//require inquirer
+const inquirer = require('inquirer');
 
 //get the query
 let queryName = "";
@@ -27,7 +31,7 @@ for (let i = 3; i < process.argv.length; i++) {
 }
 console.log(queryName);
 
-// Create OMDB API queryUrl
+// Create OMDB API & Bands in town queryUrl
 let queryUrlBit = "https://rest.bandsintown.com/artists/" + queryName + "/events?app_id=codingbootcamp";
 let queryUrlOmdb = "https://www.omdbapi.com/?t=" + queryName + "&apikey=bcc8450a";
 
@@ -36,8 +40,10 @@ if (command == "concert-this") {
     findConcert(queryUrlBit);
 } else if (command == "spotify-this-song") {
     findSong(queryName);
-} else if ( command == "movie-this") {
+} else if (command == "movie-this") {
     findMovie(queryUrlOmdb);
+} else if (command == "do-what-it-says") {
+    executeComm();
 }
 
 //Write a function named concert-this
@@ -137,7 +143,7 @@ function findSong(query) {
 //* Plot of the movie.
 //* Actors in the movie.
 
-function findMovie (query) {
+function findMovie(query) {
     axios.get(query).then(
         function (response) {
             console.log("===================");
@@ -156,3 +162,40 @@ function findMovie (query) {
 //Using the fs Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
 //It should run spotify-this-song for "I Want it That Way," as follows the text in random.txt.
 //Edit the text in random.txt to test out the feature for movie-this and concert-this.
+
+function executeComm() {
+    inquirer.prompt([
+        // Prompt the function
+        {
+            type: "list",
+            message: "What would you like to do?",
+            choices: ["spotify-this-song", "movie-this", "concert-this"],
+            name: "activity"
+        },
+        //prompt the name
+        {
+            type: "input",
+            message: "Search for:",
+            name: "searchParameter"
+        },
+    ])
+    .then(function(inquirerResponse) { 
+        let activity = inquirerResponse.activity;
+        let query = inquirerResponse.searchParameter;
+        queryName = query.replace(/\s/g, "+");
+        let data = activity + ", " + queryName;
+        console.log(data);
+        fs.writeFile('random.txt', data , (err) => {
+            if (err) throw err;
+            console.log('random.txt has been updated!');
+        });
+        
+        if (activity == "concert-this") {
+            findConcert(queryUrlBit);
+        } else if (activity == "spotify-this-song") {
+            findSong(queryName);
+        } else if (activity == "movie-this") {
+            findMovie(queryUrlOmdb);
+        }
+    });
+}
