@@ -29,13 +29,15 @@ console.log(queryName);
 
 // Create OMDB API queryUrl
 let queryUrlBit = "https://rest.bandsintown.com/artists/" + queryName + "/events?app_id=codingbootcamp";
-
+let queryUrlOmdb = "https://www.omdbapi.com/?t=" + queryName + "&apikey=bcc8450a";
 
 //write the command statements
 if (command == "concert-this") {
     findConcert(queryUrlBit);
 } else if (command == "spotify-this-song") {
     findSong(queryName);
+} else if ( command == "movie-this") {
+    findMovie(queryUrlOmdb);
 }
 
 //Write a function named concert-this
@@ -124,7 +126,6 @@ function findSong(query) {
     }
 }
 
-
 //Write a function named movie-this
 //This will output the following information to your terminal/bash window:
 //* Title of the movie.
@@ -135,6 +136,21 @@ function findSong(query) {
 //* Language of the movie.
 //* Plot of the movie.
 //* Actors in the movie.
+
+function findMovie (query) {
+    axios.get(query).then(
+        function (response) {
+            console.log("===================");
+            console.log(chalk.red("Movie title: ") + response.data.Title);
+            console.log(chalk.yellow("Released: ") + response.data.Released);
+            console.log(chalk.green("IMDB rating: ") + response.data.imdbRating);
+            console.log(chalk.blue("Rotten Tomatoes rating: ") + response.data.Ratings[1].Value);
+            console.log(chalk.red("Country: ") + response.data.Country);
+            console.log(chalk.yellow("Language: ") + response.data.Language);
+            console.log(chalk.green("Plot: ") + response.data.Plot);
+            console.log(chalk.blue("Actors: ") + response.data.Actors);
+        });
+}
 
 //Write a function named do-what-it-says
 //Using the fs Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
