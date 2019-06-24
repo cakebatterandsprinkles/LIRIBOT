@@ -13,12 +13,12 @@ const moment = require('moment');
 const axios = require('axios');
 
 //get the query
-var queryName = "";
+let queryName = "";
 // make a command variable
-var command = process.argv[2];
+let command = process.argv[2];
 
 // Grab or assemble the query and store it in a variable called "queryName"
-for (var i = 3; i < process.argv.length; i++) {
+for (let i = 3; i < process.argv.length; i++) {
     if (i > 3 && i < process.argv.length) {
         queryName = queryName + "+" + process.argv[i];
     } else if (i == 3) {
@@ -28,9 +28,15 @@ for (var i = 3; i < process.argv.length; i++) {
 console.log(queryName);
 
 // Create OMDB API queryUrl
-var queryUrlBit = "https://rest.bandsintown.com/artists/" + queryName + "/events?app_id=codingbootcamp";
-console.log(queryUrlBit);
+let queryUrlBit = "https://rest.bandsintown.com/artists/" + queryName + "/events?app_id=codingbootcamp";
 
+
+//write the command statements
+if (command == "concert-this") {
+    findConcert(queryUrlBit);
+} else if (command == "spotify-this-song") {
+    findSong(queryName);
+}
 
 //Write a function named concert-this
 //this function will search the Bands in Town Artist Events API 
@@ -40,25 +46,28 @@ console.log(queryUrlBit);
 //Venue location
 //Date of the Event (use moment to format this as "MM/DD/YYYY")
 
-if (command == "concert-this") {
-    findConcert(queryUrlBit);
-}
-
 function findConcert(query) {
     axios.get(query).then(
         function (response) {
             let data = response.data;
-            data.forEach(function (item) {
-                console.log(item.venue.name + " at " + item.venue.city + "/" + item.venue.country);
-            });
+            console.log(data);
+            if (data.length === 0) {
+                console.log(chalk.green("No planned events available for this artist."));
+            } else {
+                data.forEach(function (item) {
+                    console.log("===================");
+                    console.log(chalk.yellow("Name of the venue: ") + item.venue.name);
+                    console.log(chalk.red("Venue location: ") + item.venue.city + "/" + item.venue.country);
+                    let date = item.datetime;
+                    let formattedDate = moment(date).format("MM DD YYYY");
+                    console.log(chalk.blue("Date of the event: ") + formattedDate);
+                });
+            }
         }
     ).catch(function (error) {
         if (error) throw "error";
     });
 }
-
-
-
 
 //Write a function named spotify-this-song
 //This will show the following information about the song in your terminal/bash window
@@ -67,6 +76,53 @@ function findConcert(query) {
 //A preview link of the song from Spotify
 //The album that the song is from
 //If no song is provided then your program will default to "The Sign" by Ace of Base.
+
+function findSong(query) {
+    if (query.length === 0) {
+        spotify
+            .search({
+                type: 'track',
+                query: "the sign"
+            })
+            .then(function (response) {
+                var data = response.tracks.items;
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].artists[0].name.toLowerCase() === "ace of base") {
+                        let item = data[i];
+                        console.log("===================");
+                        console.log(chalk.green("Song name: ") + item.name);
+                        console.log(chalk.yellow("Artists: ") + item.artists[0].name);
+                        // console.log(item.artists);
+                        console.log(chalk.red("Album: ") + item.album.name);
+                        console.log(chalk.blue("Preview link: ") + item.external_urls.spotify);
+                    }
+                }
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+    } else {
+        spotify
+            .search({
+                type: 'track',
+                query: query.replace("/\+/g", " ")
+            })
+            .then(function (response) {
+                var data = response.tracks.items;
+                data.forEach(function (item) {
+                    console.log("===================");
+                    console.log(chalk.green("Song name: ") + item.name);
+                    console.log(chalk.yellow("Artists: ") + item.artists[0].name);
+                    // console.log(item.artists);
+                    console.log(chalk.red("Album: ") + item.album.name);
+                    console.log(chalk.blue("Preview link: ") + item.external_urls.spotify);
+                });
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+    }
+}
 
 
 //Write a function named movie-this
