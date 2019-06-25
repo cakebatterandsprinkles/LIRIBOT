@@ -27,7 +27,7 @@ Applications uses 3 different API's and brings the user specific data:
      * Venue location
      * Date of the Event
     ```
-    ![](concert-this.gif)
+    ![Here is the demo](concert-this.gif)
 
 2. `node liri.js spotify-this-song '<song name here>'`
 
@@ -38,9 +38,11 @@ Applications uses 3 different API's and brings the user specific data:
      * A preview link of the song from Spotify
      * The album that the song is from
     ```
-    ![](spotify-this-song.gif)
+    ![Here is the demo](spotify-this-song.gif)
 
    * If no song is provided then the program will default to "The Sign" by Ace of Base.
+
+    ![Here is the demo](spotify-this-song-empty.gif)
 
 3. `node liri.js movie-this '<movie name here>'`
 
@@ -56,23 +58,25 @@ Applications uses 3 different API's and brings the user specific data:
      * Plot of the movie.
      * Actors in the movie.
     ```
-        ![](movie-this.gif)
+    ![Here is the demo](movie-this.gif)
 
    * If you don't type a movie in, the program will output data for the movie 'Mr. Nobody.'
+    
+    ![Here is the demo](movie-this-empty.gif)
 
 4. `node liri.js do-what-it-says`
 
     :curly_loop: This will prompt you about the action you want to take, and your search query.
     * It will render the answers depending on the action you take.
 
-        ![](do-what-it-says-1.gif)
+        ![Here is the demo-1](do-what-it-says-1.gif)
 
-        ![](do-what-it-says-2.gif)
+        ![Here is the demo-2](do-what-it-says-2.gif)
 
-        ![](do-what-it-says-3.gif)
+        ![Here is the demo-3](do-what-it-says-3.gif)
 
 * :bangbang: **Warning:** The program will also log your search items into log.txt.
 
-    ![](log.gif)
+    ![Here is the demo](log.gif)
 
 

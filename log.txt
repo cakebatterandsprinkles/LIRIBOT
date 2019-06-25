@@ -10,3 +10,6 @@ do-what-it-says:
 do-what-it-says: 
 do-what-it-says: 
 do-what-it-says: 
+spotify-this-song: love+handles
+spotify-this-song: 
+movie-this: 
