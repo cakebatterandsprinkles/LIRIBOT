@@ -95,7 +95,7 @@ Applications uses 3 different API's and brings the user specific data:
 7. `node liri.js clear-data`
 
     :curly_loop: When user is finished using the program, they can delete the log.txt and random.txt files by using this command.
-    * Be careful with this command! When it's deleted, you can't get your search information back.
+    * :bangbang: **Warning:** Be careful with this command! When it's deleted, you can't get your search information back.
 
     ![Here is the demo](gifs/clear-data.gif)
 
