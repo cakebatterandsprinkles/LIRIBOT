@@ -27,7 +27,7 @@ Applications uses 3 different API's and brings the user specific data:
      * Venue location
      * Date of the Event
     ```
-    ![Here is the demo](gifs/concert-this.gif)
+    ![Here is the demo](gifs/concert-this-2.gif)
 
 2. `node liri.js spotify-this-song '<song name here>'`
 
@@ -80,7 +80,7 @@ Applications uses 3 different API's and brings the user specific data:
     :curly_loop: The program automatically creates a random.txt file and keeps your last function and search parameter inside.
     * last-search will bring you the last function and search parameter.
 
-        ![Here is the demo]()
+        ![Here is the demo](gifs/last-search.gif)
 
     * :bangbang: **Warning:** The program also creates a log.txt file and logs all of your search parameters.
 
@@ -90,14 +90,14 @@ Applications uses 3 different API's and brings the user specific data:
 
     :curly_loop: This command prints the search history from log.txt file in your console.
 
-    ![Here is the demo]()
+    ![Here is the demo](gifs/search-log.gif)
 
 7. `node liri.js clear-data`
 
     :curly_loop: When user is finished using the program, they can delete the log.txt and random.txt files by using this command.
     * Be careful with this command! When it's deleted, you can't get your search information back.
 
-    ![Here is the demo]()
+    ![Here is the demo](gifs/clear-data.gif)
 
 
 
