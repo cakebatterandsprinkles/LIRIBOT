@@ -75,8 +75,30 @@ Applications uses 3 different API's and brings the user specific data:
 
         ![Here is the demo-3](gifs/do-what-it-says-3.gif)
 
-* :bangbang: **Warning:** The program will also log your search items into log.txt.
+5. `node liri.js last-search`
+
+    :curly_loop: The program automatically creates a random.txt file and keeps your last function and search parameter inside.
+    * last-search will bring you the last function and search parameter.
+
+        ![Here is the demo]()
+
+    * :bangbang: **Warning:** The program also creates a log.txt file and logs all of your search parameters.
 
     ![Here is the demo](gifs/log.gif)
+
+6. `node liri.js search-log`
+
+    :curly_loop: This command prints the search history from log.txt file in your console.
+
+    ![Here is the demo]()
+
+7. `node liri.js clear-data`
+
+    :curly_loop: When user is finished using the program, they can delete the log.txt and random.txt files by using this command.
+    * Be careful with this command! When it's deleted, you can't get your search information back.
+
+    ![Here is the demo]()
+
+
 
 

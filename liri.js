@@ -29,7 +29,9 @@ for (let i = 3; i < process.argv.length; i++) {
         queryName = process.argv[i];
     }
 }
-console.log(queryName);
+if (queryName.length > 0) {
+    console.log(chalk.cyan.bold("You have searched for: ") + chalk.bold(queryName.replace(/\+/g, " ").toUpperCase()));
+}
 
 // Create OMDB API & Bands in town queryUrl
 let queryUrlBit = "https://rest.bandsintown.com/artists/" + queryName + "/events?app_id=codingbootcamp";
@@ -38,26 +40,28 @@ let queryUrlOmdb = "https://www.omdbapi.com/?t=" + queryName + "&apikey=bcc8450a
 //write the command statements
 if (command == "concert-this") {
     findConcert(queryUrlBit);
-    logResult (command + ": " + queryName + "\n");
+    logResult (command + ": " + queryName.replace(/\+/g, " ").toUpperCase() + "\n");
 } else if (command == "spotify-this-song") {
     findSong(queryName);
-    logResult (command + ": " + queryName+ "\n");
+    logResult (command + ": " + queryName.replace(/\+/g, " ").toUpperCase() + "\n");
 } else if (command == "movie-this") {
     if (queryUrlOmdb == "https://www.omdbapi.com/?t=&apikey=bcc8450a") {
         queryUrlOmdb = "https://www.omdbapi.com/?t=mr+nobody&apikey=bcc8450a";
         findMovie(queryUrlOmdb);
-        logResult (command + ": " + queryName+ "\n");
+        logResult (command + ": " + queryName.replace(/\+/g, " ").toUpperCase() + "\n");
     } else {
         findMovie(queryUrlOmdb);
-        logResult (command + ": " + queryName+ "\n");
+        logResult (command + ": " + queryName.replace(/\+/g, " ").toUpperCase() + "\n");
     }
 } else if (command == "do-what-it-says") {
     executeComm();
-    logResult (command + ": " + queryName+ "\n");
+    logResult (command + ": " + queryName.replace(/\+/g, " ").toUpperCase() + "\n");
 } else if (command == "last-search") {
     lastSearch();
 } else if (command == "clear-data") {
     clearData();
+} else if (command == "search-log") {
+    searchLog();
 }
 
 //Write a function to create and append the following data to log.txt file
@@ -65,11 +69,11 @@ function logResult (text) {
     fs.appendFile('log.txt', text, (err) => {
         if (err) throw err;
       });
-      //change the text in random.txt
-      fs.writeFile('random.txt', text, (err) => {
-          if (err) throw err;
-          console.log('random.txt has been updated!');
-      });
+    //change the text in random.txt
+    fs.writeFile('random.txt', text, (err) => {
+        if (err) throw err;
+        console.log('random.txt has been updated!');
+    });
 }
 
 //Write a function named concert-this
@@ -234,7 +238,17 @@ function executeComm() {
 function lastSearch () {
     fs.readFile('./random.txt', 'utf8', function read(err, data){
         if (err) throw err;
-        console.log(data);
+        console.log(chalk.inverse(data));
+    });
+}
+
+//Write a function named search-log
+//This will output the last search logged into random.txt
+
+function searchLog () {
+    fs.readFile('./log.txt', 'utf8', function read(err, data){
+        if (err) throw err;
+        console.log(chalk.inverse(data));
     });
 }
 
@@ -246,8 +260,8 @@ function clearData () {
         if (err) throw err;
         console.log('successfully deleted random.txt');
       });
-      fs.unlink('./log.txt', (err) => {
-        if (err) throw err;
-        console.log('successfully deleted log.txt');
-      });
+    fs.unlink('./log.txt', (err) => {
+    if (err) throw err;
+    console.log('successfully deleted log.txt');
+    });
 }
