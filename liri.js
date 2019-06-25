@@ -60,7 +60,6 @@ if (command == "concert-this") {
 function logResult (text) {
     fs.appendFile('log.txt', text, (err) => {
         if (err) throw err;
-        console.log('The "data to append" was appended to file!');
       });
 }
 
@@ -76,7 +75,6 @@ function findConcert(query) {
     axios.get(query).then(
         function (response) {
             let data = response.data;
-            console.log(data);
             if (data.length === 0) {
                 console.log(chalk.green("No planned events available for this artist."));
             } else {
@@ -210,7 +208,6 @@ function executeComm() {
 
 
             let data = activity + ", " + queryName;
-            console.log(data);
             //change the text in random.txt
             fs.writeFile('random.txt', data, (err) => {
                 if (err) throw err;

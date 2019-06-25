@@ -27,6 +27,7 @@ Applications uses 3 different API's and brings the user specific data:
      * Venue location
      * Date of the Event
     ```
+    ![](concert-this.gif)
 
 2. `node liri.js spotify-this-song '<song name here>'`
 
@@ -37,6 +38,7 @@ Applications uses 3 different API's and brings the user specific data:
      * A preview link of the song from Spotify
      * The album that the song is from
     ```
+    ![](spotify-this-song.gif)
 
    * If no song is provided then the program will default to "The Sign" by Ace of Base.
 
@@ -54,6 +56,7 @@ Applications uses 3 different API's and brings the user specific data:
      * Plot of the movie.
      * Actors in the movie.
     ```
+        ![](movie-this.gif)
 
    * If you don't type a movie in, the program will output data for the movie 'Mr. Nobody.'
 
@@ -62,6 +65,14 @@ Applications uses 3 different API's and brings the user specific data:
     :curly_loop: This will prompt you about the action you want to take, and your search query.
     * It will render the answers depending on the action you take.
 
+        ![](do-what-it-says-1.gif)
+
+        ![](do-what-it-says-2.gif)
+
+        ![](do-what-it-says-3.gif)
+
 * :bangbang: **Warning:** The program will also log your search items into log.txt.
+
+    ![](log.gif)
 
 
