@@ -54,12 +54,21 @@ if (command == "concert-this") {
 } else if (command == "do-what-it-says") {
     executeComm();
     logResult (command + ": " + queryName+ "\n");
+} else if (command == "last-search") {
+    lastSearch();
+} else if (command == "clear-data") {
+    clearData();
 }
 
 //Write a function to create and append the following data to log.txt file
 function logResult (text) {
     fs.appendFile('log.txt', text, (err) => {
         if (err) throw err;
+      });
+      //change the text in random.txt
+      fs.writeFile('random.txt', text, (err) => {
+          if (err) throw err;
+          console.log('random.txt has been updated!');
       });
 }
 
@@ -206,13 +215,6 @@ function executeComm() {
             let query = inquirerResponse.searchParameter;
             queryName = query.replace(/\s/g, "+");
 
-
-            let data = activity + ", " + queryName;
-            //change the text in random.txt
-            fs.writeFile('random.txt', data, (err) => {
-                if (err) throw err;
-                console.log('random.txt has been updated!');
-            });
             //change the function according to activity input
             if (activity == "concert-this") {
                 let queryUrlBit = "https://rest.bandsintown.com/artists/" + queryName + "/events?app_id=codingbootcamp";
@@ -224,4 +226,28 @@ function executeComm() {
                 findMovie(queryUrlOmdb);
             }
         });
+}
+
+//Write a function named last-search
+//This will output the last search logged into random.txt
+
+function lastSearch () {
+    fs.readFile('./random.txt', 'utf8', function read(err, data){
+        if (err) throw err;
+        console.log(data);
+    });
+}
+
+//Write a function named clear-data
+//This will delete the random.txt, log.txt
+
+function clearData () {
+    fs.unlink('./random.txt', (err) => {
+        if (err) throw err;
+        console.log('successfully deleted random.txt');
+      });
+      fs.unlink('./log.txt', (err) => {
+        if (err) throw err;
+        console.log('successfully deleted log.txt');
+      });
 }
