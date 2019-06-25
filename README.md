@@ -62,6 +62,6 @@ Applications uses 3 different API's and brings the user specific data:
     :curly_loop: This will prompt you about the action you want to take, and your search query.
     * It will render the answers depending on the action you take.
 
-* The program will also log your search items into log.txt, so that you can reach the information all at once.
-* :bangbang: **Warning:** Log.txt clears itself after the program is closed. 
+* :bangbang: **Warning:** The program will also log your search items into log.txt.
+
 

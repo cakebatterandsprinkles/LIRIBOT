@@ -2,7 +2,6 @@
 require('dotenv').config();
 //require chalk, give error messages red color
 const chalk = require('chalk');
-const error = chalk.bold.red;
 //require spotify API, take the keys from keys.js
 const Spotify = require('node-spotify-api');
 const keys = require('./keys.js');
@@ -21,6 +20,7 @@ let queryName = "";
 // make a command variable
 let command = process.argv[2];
 
+
 // Grab or assemble the query and store it in a variable called "queryName"
 for (let i = 3; i < process.argv.length; i++) {
     if (i > 3 && i < process.argv.length) {
@@ -38,12 +38,30 @@ let queryUrlOmdb = "https://www.omdbapi.com/?t=" + queryName + "&apikey=bcc8450a
 //write the command statements
 if (command == "concert-this") {
     findConcert(queryUrlBit);
+    logResult (command + ": " + queryName + "\n");
 } else if (command == "spotify-this-song") {
     findSong(queryName);
+    logResult (command + ": " + queryName+ "\n");
 } else if (command == "movie-this") {
-    findMovie(queryUrlOmdb);
+    if (queryUrlOmdb == "https://www.omdbapi.com/?t=&apikey=bcc8450a") {
+        queryUrlOmdb = "https://www.omdbapi.com/?t=mr+nobody&apikey=bcc8450a";
+        findMovie(queryUrlOmdb);
+        logResult (command + ": " + queryName+ "\n");
+    } else {
+        findMovie(queryUrlOmdb);
+        logResult (command + ": " + queryName+ "\n");
+    }
 } else if (command == "do-what-it-says") {
     executeComm();
+    logResult (command + ": " + queryName+ "\n");
+}
+
+//Write a function to create and append the following data to log.txt file
+function logResult (text) {
+    fs.appendFile('log.txt', text, (err) => {
+        if (err) throw err;
+        console.log('The "data to append" was appended to file!');
+      });
 }
 
 //Write a function named concert-this
@@ -143,18 +161,24 @@ function findSong(query) {
 //* Plot of the movie.
 //* Actors in the movie.
 
+// * If you don't type a movie in, the program will output data for the movie 'Mr. Nobody.'
+
 function findMovie(query) {
     axios.get(query).then(
         function (response) {
-            console.log("===================");
-            console.log(chalk.red("Movie title: ") + response.data.Title);
-            console.log(chalk.yellow("Released: ") + response.data.Released);
-            console.log(chalk.green("IMDB rating: ") + response.data.imdbRating);
-            console.log(chalk.blue("Rotten Tomatoes rating: ") + response.data.Ratings[1].Value);
-            console.log(chalk.red("Country: ") + response.data.Country);
-            console.log(chalk.yellow("Language: ") + response.data.Language);
-            console.log(chalk.green("Plot: ") + response.data.Plot);
-            console.log(chalk.blue("Actors: ") + response.data.Actors);
+                console.log("===================");
+                console.log(chalk.red("Movie title: ") + response.data.Title);
+                console.log(chalk.yellow("Released: ") + response.data.Released);
+                console.log(chalk.green("IMDB rating: ") + response.data.imdbRating);
+                if (response.data.Ratings.length > 1) {
+                    console.log(chalk.blue("Rotten Tomatoes rating: ") + response.data.Ratings[1].Value);
+                } else {
+                    console.log(chalk.blue("Rotten Tomatoes rating: ") + "No rating");
+                }
+                console.log(chalk.magenta("Country: ") + response.data.Country);
+                console.log(chalk.cyan("Language: ") + response.data.Language);
+                console.log(chalk.red("Plot: ") + response.data.Plot);
+                console.log(chalk.yellow("Actors: ") + response.data.Actors);
         });
 }
 
@@ -165,37 +189,42 @@ function findMovie(query) {
 
 function executeComm() {
     inquirer.prompt([
-        // Prompt the function
-        {
-            type: "list",
-            message: "What would you like to do?",
-            choices: ["spotify-this-song", "movie-this", "concert-this"],
-            name: "activity"
-        },
-        //prompt the name
-        {
-            type: "input",
-            message: "Search for:",
-            name: "searchParameter"
-        },
-    ])
-    .then(function(inquirerResponse) { 
-        let activity = inquirerResponse.activity;
-        let query = inquirerResponse.searchParameter;
-        queryName = query.replace(/\s/g, "+");
-        let data = activity + ", " + queryName;
-        console.log(data);
-        fs.writeFile('random.txt', data , (err) => {
-            if (err) throw err;
-            console.log('random.txt has been updated!');
+            // Prompt the function
+            {
+                type: "list",
+                message: "What would you like to do?",
+                choices: ["spotify-this-song", "movie-this", "concert-this"],
+                name: "activity"
+            },
+            //prompt the name
+            {
+                type: "input",
+                message: "Search for:",
+                name: "searchParameter"
+            },
+        ])
+        .then(function (inquirerResponse) {
+            let activity = inquirerResponse.activity;
+            let query = inquirerResponse.searchParameter;
+            queryName = query.replace(/\s/g, "+");
+
+
+            let data = activity + ", " + queryName;
+            console.log(data);
+            //change the text in random.txt
+            fs.writeFile('random.txt', data, (err) => {
+                if (err) throw err;
+                console.log('random.txt has been updated!');
+            });
+            //change the function according to activity input
+            if (activity == "concert-this") {
+                let queryUrlBit = "https://rest.bandsintown.com/artists/" + queryName + "/events?app_id=codingbootcamp";
+                findConcert(queryUrlBit);
+            } else if (activity == "spotify-this-song") {
+                findSong(queryName);
+            } else if (activity == "movie-this") {
+                let queryUrlOmdb = "https://www.omdbapi.com/?t=" + queryName + "&apikey=bcc8450a";
+                findMovie(queryUrlOmdb);
+            }
         });
-        
-        if (activity == "concert-this") {
-            findConcert(queryUrlBit);
-        } else if (activity == "spotify-this-song") {
-            findSong(queryName);
-        } else if (activity == "movie-this") {
-            findMovie(queryUrlOmdb);
-        }
-    });
 }
